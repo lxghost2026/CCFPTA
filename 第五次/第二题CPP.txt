@@ -1,0 +1,49 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+   int n = 6;
+   std::vector<std::vector<int>> s;
+   s.push_back({n});
+
+   // 分别指示上一次的开始下标和结束下标
+   // 才开始只有一个元素，故指向0
+   int begin = 0, end = 0;
+
+
+   while (true)
+   {
+      // 分别从对低位开始依次插入
+      for (int j = begin; j <= end; j++)
+      {
+         for (int i = 1; i <= s[j][s[j].size()-1] / 2; i++)
+         {
+            // i为可以插入的数
+            std::vector<int> tmp=s[j];
+            tmp.push_back(i);
+            s.push_back(tmp);
+         }
+      }
+      
+      if(end==s.size()-1)
+         break;//说明没有新的产生了
+      //更新开始和结束
+      begin=end+1;
+      end=s.size()-1;
+
+   }
+
+   cout<<endl;
+   for(int i=0;i<s.size();i++)
+   {
+      for(int j=0;j<s[i].size();j++)
+         cout<<s[i][j]<<" ";
+      cout<<endl;
+   }
+    
+
+   system("pause");
+   return 0;
+}

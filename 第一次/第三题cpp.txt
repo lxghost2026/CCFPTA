@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+   //动态规划，斐波那契数列
+   //f(n)=f(n-1)+f(n-2)
+   int n=8;
+
+   if(n==1)
+      return 1;
+   if(n==2)
+      return 2;
+   
+   int a=1,b=2;//a是对1级，b是对应到2级
+
+   for(int i=3;i<=n;i++)
+   {
+      int tmp=a+b;//当前等于前两个相加
+      a=b;//后倒数第二个赋值倒倒数第一个
+      b=tmp;
+   }
+   cout<<endl<<b<<endl;
+
+   system("pause");
+   return 0;
+}

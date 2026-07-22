@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+
+
+int main()
+{
+   int n=6;//天数
+
+   int sum=0;//总发射次数
+   int k=1;//第一天发射一颗,当前天发射的卫星数
+   for(int i=0,j=k;i<n;i++)
+   {
+      sum+=k;
+      j--;//当前发射的卫星数还剩余的天数
+      if(j==0)
+      {
+         //若当前发射的卫星数剩余的天数为0
+         //则下一次需要每天多发射一颗卫星
+         k++;
+         j=k;//天数从头计数
+      }
+   }
+   cout<<endl<<sum<<endl;
+
+
+   system("pause");
+   return 0;
+}

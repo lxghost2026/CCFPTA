@@ -1,0 +1,88 @@
+#include <vector>
+#include <iostream>
+#include <numeric>
+using namespace std;
+
+struct node
+{
+   int a,b;
+   long long value;
+   node(int _a,int _b, long long _v):a(_a-1),b(_b-1),value(_v){}
+};
+
+int n=4;//顶点数
+int m=5;//边数
+long long ans=-1;
+std::vector<node> edge;
+std::vector<int> father(n,0);
+
+
+
+int getfather(int a)
+{
+  if(father[a]==a)
+      return a;
+   father[a]=getfather(father[a]);
+   return father[a];
+}
+
+void merge(int a,int b)
+{
+   int fa=getfather(a);
+   int fb=getfather(b);
+   father[fa]=fb;
+   
+}
+
+//克鲁斯卡尔算法
+void Kruskal(int k)
+{
+   std::iota(father.begin(),father.end(),0);
+   int cnt=0;//生成的边的数量
+   
+   for(int i=k;i<m;i++)
+   {
+      int v=getfather(edge[i].a);
+      int u=getfather(edge[i].b);
+      if(v!=u)
+      {
+         merge(v,u);
+         cnt++;
+         if(cnt==n-1)
+         {
+            //最小生成树已经生成
+            if(ans==-1)
+               ans=edge[i].value-edge[k].value;
+            else
+               ans=std::min(ans,edge[i].value-edge[k].value);
+            break;
+         }
+      }
+   }
+
+}
+
+int main()
+{
+
+   edge.emplace_back(1,2,3);
+   edge.emplace_back(1,3,5);
+   edge.emplace_back(1,4,6);
+   edge.emplace_back(2,4,6);
+   edge.emplace_back(3,4,7);
+
+   std::sort(edge.begin(),edge.end(),[&](auto& a,auto &b)->auto
+   {
+      return a.value<b.value;
+   });
+
+   father.resize(n,0);
+   for(int k=0;k<edge.size();k++)
+   {
+      Kruskal(k);
+   }
+
+   cout<<"ans="<<ans<<endl;
+   system("pause");
+   return 0;
+}

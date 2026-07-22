@@ -1,0 +1,53 @@
+
+#include <string>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+
+   /*
+   std::string str = "Hello World";
+
+   // 删除下标为 5 的单个字符（即空格）
+   str.erase(5, 1);
+   std::cout << str;  // 输出：HelloWorld
+
+   // 删除从下标 5 开始的 3 个字符
+   str.erase(5, 3);
+   // 假设原字符串 "Hello World"，结果为 "Helorld"
+   */
+
+   string str = "175438";
+   int k = 3;
+
+   while (k-- > 0)
+   {
+      bool flag = false;
+      for (int i = 0; i < str.size(); i++)
+      {
+         if (i != str.size() - 1 && str[i] > str[i + 1])
+         {
+            // 需要删除从到右的第一个大于其后的数字
+            str.erase(i, 1);
+            flag = true;
+            break;
+         }
+      }
+      if (flag == false)
+      {
+         // 则删除最后一个元素
+         str.erase(str.size() - 1, 1);
+      }
+   }
+
+   //如果str最前面有0的话，也需要删除
+   while (str.size()>0&&str[0]=='0')
+   {
+      str.erase(0,1);
+   }
+   
+   cout << endl<< str << endl;
+   system("pause");
+   return 0;
+}

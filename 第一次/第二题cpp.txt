@@ -1,0 +1,21 @@
+#include <iostream>
+
+int main()
+{
+   int n=11,x=1;
+   int count=0;
+   for(int i=1;i<=n;i++)
+   {
+      int tmp=i;
+      while(tmp>0)
+      {
+         if(tmp%10==x)
+            count++;
+         tmp/=10;
+      }
+   }
+   
+   std::cout<<"Count="<<count<<std::endl;
+   system("pause");
+   return 0;
+}

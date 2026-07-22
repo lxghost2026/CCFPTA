@@ -1,0 +1,41 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+
+   //n 是按钮数量，k是颜色数量，p是两人的积分
+   int n=5, k=2, p=3;
+   std::vector<int> num(k,0);
+   std:vector<int> color={0,1,0,1,1};
+   std::vector<int> score={5,3,2,4,5};
+
+   int flag=-1;//上一个flag的按钮，初始设置为-1
+   int ans=0;//当前点的方案数
+   
+   for(int i=0;i<n;i++)
+   {
+      //按钮积分不大于两人手中的积分
+      if(score[i]<=p)
+      {
+         //i是特征点，则需要把上一个特征点到当前特征点的各颜色的按钮数量+1
+         //每出现一个，都需要加1
+         for(int j=i;j>flag;j--)
+         {
+            num[color[j]]++;
+         }
+         //跟新当前的特征点位
+         flag=i;
+         ans+=num[color[i]]-1;//自己和自己不能成一个方案，所以要减一
+      }
+      else
+         ans+=num[color[i]];
+   }
+   
+   std::cout<<"ans="<<ans;
+
+   system("pause");
+   return 0;
+}

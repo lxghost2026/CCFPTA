@@ -1,0 +1,46 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+int depth = 0; // 深度
+
+struct node
+{
+   int left;
+   int right;
+   node(int l = 0, int r = 0) : left(l), right(r) {}
+};
+
+std::vector<node> s;
+
+//r为当前访问的节点序号
+//由于下标是从0开始，所以后面访问的下标+1
+void dfs(int r, int dep)
+{
+   if (r == 0)
+      return;
+   depth = std::max(depth, dep);
+   dfs(s[r].left, dep + 1);
+   dfs(s[r].right, dep + 1);
+}
+
+int main()
+{
+   int n = 7; // 节点总数
+   //由于用0来代表空节点，所以这里多压入一个，树的根节点下标从1开始
+   s.emplace_back(0, 0);
+   s.emplace_back(2, 7);
+   s.emplace_back(3, 6);
+   s.emplace_back(4, 5);
+   s.emplace_back(0, 0);
+   s.emplace_back(0, 0);
+   s.emplace_back(0, 0);
+   s.emplace_back(0, 0);
+
+   dfs(1, 1);
+   cout << endl
+        << depth << endl;
+
+   system("pause");
+   return 0;
+}
