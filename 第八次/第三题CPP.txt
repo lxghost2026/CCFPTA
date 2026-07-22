@@ -1,0 +1,67 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+   int N=5;//选手数量
+   int ans=0;//获得金币数
+
+   //std::vector<int> s1={9,5,7};//本班
+   //std::vector<int> s2={8,6,4};//对方班
+
+   std::vector<int> s1={1,3,5,7,9};//本班
+   std::vector<int> s2={2,4,6,8,10};//对方班
+   sort(s1.begin(),s1.end());
+   sort(s2.begin(),s2.end());
+
+   int L1=0,R1=N-1;//本班最弱的和最强的下标
+   int L2=0,R2=N-1;//对方班最弱的和最强的下标
+
+   for(int i=0;i<N;i++)
+   {
+      if(s1[R1]>s2[R2])
+      {
+         //若本班最强的比对方班最强的还要强
+         //则直接比较，赢的两个金币
+         ans+=2;
+         R1--;
+         R2--;
+      }
+      else if (s1[R1]<s2[R2])
+      {
+         //若本班最强的比对方班最强的要弱
+         //则拿最弱的去对比，输掉两个金币
+         ans-=2;
+         L1++;//用当前最弱的去比
+         R2--;
+      }
+      else if(s1[L1]>s2[L2])
+      {
+         //若本班最弱的都比对方最弱的要强
+         //则直接比较，赢的两个金币
+         ans+=2;
+         L1++;
+         L2++;
+      }
+      else
+      {
+         //若本班最弱的都比对方最弱的还要弱
+         //既然是输，就用本班最弱的和对方最强的去比
+         if(s1[L1]<s2[R2])//若实力相等不减分
+         {
+            ans-=2;
+         }
+         L1++;
+         R2--;
+      }
+      
+
+   }
+
+   cout<<endl<<ans<<endl;
+
+   system("pause");
+   return 0;
+}

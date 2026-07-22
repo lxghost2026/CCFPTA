@@ -1,0 +1,52 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+// 表示坐标
+std::vector<int> s;
+
+int main()
+{
+   int ans = 0;
+   int n = 5; // 隔间数
+   int c = 3; // 学生数
+
+   s = {1, 2, 8, 4, 9}; // 隔间的坐标
+   // 坐标从小到大排序
+   std::sort(s.begin(), s.end());
+
+   int low = s[0];
+   int high = s[s.size() - 1] - s[0];
+   while (low <= high)
+   {
+      int mid = (low + high) / 2;
+      int cnt = 1;//第一个学生放在最左边
+      int left = 0;//最左边的隔间下标
+
+      for (int i = 1; i < s.size(); i++)
+      {
+         if(s[i]-s[left]>=mid)
+         {
+            cnt++;//满足要求的隔间数+1
+            left=i;//更新左边的隔间下标
+         }
+      }
+
+
+      if(cnt>=c)
+      {
+         //满足要求
+         ans=std::max(ans,mid);//更新目前找到的最大间隔
+         low=mid+1;
+      }
+      else
+      {
+         high=mid-1;
+      }
+   }
+
+   cout << endl<< ans << endl;
+
+   system("pause");
+   return 0;
+}

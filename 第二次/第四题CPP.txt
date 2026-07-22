@@ -1,0 +1,33 @@
+#include <iostream>
+using namespace std;
+
+
+bool isBalance(int& wb)
+{
+   //左重量，左距离，右重量，右距离
+   int wl,dl,wr,dr;
+   cin>>wl>>dl>>wr>>dr;
+
+   //bl:左边是否平衡，br:右边是平衡
+   bool bl=true,br=true;
+
+   if(wl==0)//如果是左子跷跷板
+      bl=isBalance(wl);//wl 传出来的是左子跷跷板的总重量
+   if(wr==0)//如果是右子跷跷板
+      br=isBalance(wr);//wr 传出来的是右子跷跷板的总重量
+   
+   wb=wl+wr;//子跷跷板的总重量，返回给上一层跷跷板
+   return bl==true && br==true && wl*dl==wr*dr;
+
+}
+
+
+int main()
+{
+  int wb=0;//跷跷板的总重量
+
+  cout<<isBalance(wb)<<endl;
+
+   system("pause");
+   return 0;
+}

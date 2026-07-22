@@ -1,0 +1,53 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+   int N=3;
+   //全部初始化为零，代表没有填数字
+   std::vector<std::vector<int>> s(N,std::vector<int>(N,0));
+   
+   //s[x][y]
+   //假设x=0为最上面的一行，x=N-1为最下面的一行
+   //所以向上移动的时候，x-1
+   //向下移动：x+1
+   //向右移动：y+1
+
+
+   int x=0,y=N/2;//指向第一行的正中间
+   s[x][y]=1;
+   int k=2;
+   for(int i=1;i<N*N;i++)
+   {
+      int x1=(x-1+N)%N;//向上移动一格
+      int y1=(y+1+N)%N;//向右移动一格
+      if(s[x1][y1]==0)
+      {
+         //没有填数字
+         s[x1][y1]=k++;
+      }
+      else
+      {
+         //填了数字，采用第三步
+         x1=(x+1+N)%N;//向下移动一行
+         y1=y;
+         s[x1][y1]=k++;
+      }
+      x=x1;
+      y=y1;
+   }
+
+   cout<<endl;
+   for(int i=0;i<N;i++)
+   {
+      for(int j=0;j<N;j++)
+      {
+         cout<<s[i][j]<<" ";
+      }
+      cout<<endl;
+   }
+
+   system("pause");
+   return 0;
+}

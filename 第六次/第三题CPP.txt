@@ -1,0 +1,61 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+int ans = 0;        // 方案数
+int N = 2;          // 迷宫的长
+int M = 2;          // 迷宫的宽
+int SX = 1, SY = 1; // 起点坐标
+int FX = 2, FY = 2; // 终点坐标
+
+// 移动的方向，假设x=1为最上面那行
+std::vector<std::vector<int>> Fx = {{-1, 0},  // 向下
+                                    {0, 1},   // 向右
+                                    {1, 0},   // 向上
+                                    {0, -1}}; // 向左
+
+void dfs(int x, int y, std::vector<std::vector<int>> &s,
+        std::vector<std::vector<int>> &visted)
+{
+   if (x == FX && y == FY)
+   {
+      // 到达终点
+      ans++;
+      return;
+   }
+   visted[x][y] = 1; // 标记已经访问过
+   for (int i = 0; i < 4; i++)
+   {
+      int nx = x + Fx[i][0];
+      int ny = y + Fx[i][1];
+      if (nx >= 1 && nx <= N && ny >= 1 && ny <= M && visted[nx][ny] == 0 && s[nx][ny] == 0)
+      {
+         visted[x][y] = 1; // 标记已经访问过
+         dfs(nx, ny, s, visted);
+         // 回溯
+         visted[x][y] = 0; // 标记未访问
+      }
+   }
+}
+
+int main()
+{
+
+   int T = 1; // 总障碍数
+
+   /// 0是没有障碍物，假设迷宫下标从1开始
+   std::vector<std::vector<int>> s(N + 1, std::vector<int>(M + 1, 0));
+
+   /// 标记数组，0，没有走过，1走过了
+   std::vector<std::vector<int>> visted(N + 1, std::vector<int>(M + 1, 0));
+
+   // 加入障碍物
+   s[1][2] = 1; // 1表示有障碍物，下标从0开始
+
+   dfs(SX,SY,s,visted);
+
+   cout<<endl<<ans<<endl;
+
+   system("pause");
+   return 0;
+}

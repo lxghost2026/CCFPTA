@@ -1,0 +1,35 @@
+#include <string>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+   int mp[300];
+   mp['A'] = 10;
+   mp['B'] = 11;
+   mp['C'] = 12;
+   mp['D'] = 13;
+   mp['E'] = 14;
+   mp['F'] = 15;
+   for (char e = '0'; e <= '9'; e++)
+      mp[e] = e - '0';
+
+   int N = 2;
+   while (N-- > 0)
+   {
+      string str = "1362";
+      int k = 8;
+      cin >> k >> str;
+
+      int ans=0;
+      //原理就是从左往右，每往右一位，就乘以K
+      //比如123，ans=1，ans=1*10+2=12,ans=12*10+3=123
+      for(int i=0;i<str.size();i++)
+         ans=ans*k+mp[str[i]];
+      
+      cout<<endl<<ans<<endl;
+   }
+
+   system("pause");
+   return 0;
+}

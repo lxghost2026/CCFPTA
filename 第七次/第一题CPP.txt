@@ -1,0 +1,33 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+
+//下标从1开始使用
+std::vector<string> id={"","a","b","c"};
+//1 2 3
+//1->2,3=1^2
+//2->3,1=2^3
+//1->3,2=1^3
+void dfs(int c,int x, int y)
+{
+   if(c==0)
+      return;
+   dfs(c-1,x,x^y);
+   cout<<id[x]<<"->"<<c<<"->"<<id[y]<<endl;
+   dfs(c-1,x^y,y);
+}
+
+int main()
+{
+   int n=2;//盘子数量
+
+   ///n个盘子，开始在1号柱子
+   ///需要全部移动到2号柱子
+   dfs(n,1,2);
+
+
+
+   system("pause");
+   return 0;
+}

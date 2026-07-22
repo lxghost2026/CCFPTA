@@ -1,0 +1,54 @@
+
+#include <string>
+#include <iostream>
+using namespace std;
+
+
+
+void example_reverse()
+{
+   //std::reverse 是 C++ 标准库中的一个算法，它的作用非常直接：将指定范围内的元素顺序完全颠倒过来。
+   string str="123456";
+   std::reverse(str.begin(),str.end());
+   std::cout<<endl<<str<<endl;
+}
+
+
+int main()
+{
+   string str1="769584695655486596597654685486745";
+   string str2="452537865655768856564568658";
+
+   std::reverse(str1.begin(),str1.end());
+   std::reverse(str2.begin(),str2.end());
+
+   string res;//最后的结果
+
+   //字符串的最长长度
+   int maxLength=std::max(str1.size(),str2.size());
+
+   int c=0;//进位
+
+   for(int i=0;i<maxLength;i++)
+   {
+      int c1=0,c2=0;
+      if(i<str1.size())
+         c1=str1[i]-'0';
+      if(i<str2.size())
+         c2=str2[i]-'0';
+      int sum=c1+c2+c;
+      c=sum/10;//得到新的进位
+      res+='0'+sum%10;
+   }
+
+   if(c>0)
+     res+='0'+c;
+   
+   std::reverse(res.begin(),res.end());
+
+   cout<<endl<<res<<endl;
+
+
+   system("pause");
+   return 0;
+}

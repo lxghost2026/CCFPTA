@@ -1,0 +1,124 @@
+#include <vector>
+#include <string>
+#include <iostream>
+using namespace std;
+
+const int MAX_N = 100000; // m+n的最大值
+const int DIGITS = 100;   // 需要保留的位数
+
+// 高精度乘法（只保留后100位），num是质数
+void multiply(vector<int> &result, int num)
+{
+   int carry = 0;//进位
+   for (int i = 0; i < DIGITS; i++)
+   {
+      //每一位与质数相乘
+      long long temp = (long long)result[i] * num + carry;
+      result[i] = temp % 10;//当前位
+      carry = temp / 10;   //进位
+   }
+   // 超过100位的进位直接丢弃
+}
+
+
+// 计算n!中质数p的指数
+int calcExponent(int n, int p)
+{
+   int count = 0;
+   int temp = n;
+   while (temp > 0)
+   {
+      temp /= p;
+      count += temp;
+   }
+   return count;
+}
+
+
+
+/*
+埃拉托斯特尼筛法生成质数是古希腊数学家埃拉托斯特尼发明的一种简单、高效的算法，
+用于在给定范围内（通常是从 2 到某个整数 n）快速找出所有质数
+
+核心原理
+从小到大列出从 2 到 n 的所有整数。
+取当前最小的未被标记的数，它一定是质数。
+将这个质数的所有倍数（从它的平方开始）标记为“合数”（不是质数）。
+重复步骤 2 和 3，直到检查到 √n 为止。
+最终所有未被标记的数都是质数。
+
+为什么从平方开始标记？
+因为对于质数 p，小于 p² 的倍数（如 2p, 3p, ..., (p-1)p）已经被更小的质数标记过了，无需重复操作，这大大提高了效率。
+
+
+具体例子：生成 1~30 内的质数
+列出 2~30 的所有数：
+2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
+
+取第一个数 2（质数），标记 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30 为合数。
+下一个未标记的是 3（质数），标记 9, 15, 21, 27（6,12,18,24,30 已被标记）。
+下一个是 5（质数），标记 25（10,15,20,30 已标记）。
+下一个是 7（质数），标记 49（超过 30，停止）。
+剩下未标记的数：
+2, 3, 5, 7, 11, 13, 17, 19, 23, 29 —— 全部为质数。
+*/
+
+// 埃拉托斯特尼筛法生成质数
+vector<int> generatePrimes(int limit)
+{
+   vector<bool> isPrime(limit + 1, true);
+   vector<int> primes;
+   isPrime[0] = isPrime[1] = false;
+   for (int i = 2; i <= limit; i++)
+   {
+      if (isPrime[i])
+      {
+         primes.push_back(i);
+         for (long long j = (long long)i * i; j <= limit; j += i)
+         {
+            isPrime[j] = false;
+         }
+      }
+   }
+   return primes;
+}
+
+//C(n+m,n)=(n+m)!/(m!* n!)
+
+int main()
+{
+   int m=2, n=2;
+   //cin >> m >> n;
+   int total = m + n;
+   // 生成所有需要的质数
+   vector<int> primes = generatePrimes(total);
+   // 初始化结果数组，只保留100位
+   vector<int> result(DIGITS, 0);
+   result[0] = 1; // 初始化为1
+   // 计算组合数 C(total, m) = total! / (m! * n!)
+   // 使用质因数分解的方法
+   for (int p : primes)
+   {
+      if (p > total)
+         break;
+      // 计算质数p在组合数中的指数
+      int exponent = calcExponent(total, p) - calcExponent(m, p) - calcExponent(n, p);
+      // 将p^exponent 乘到结果中
+      for (int i = 0; i < exponent; i++)
+      {
+         multiply(result, p);
+      }
+   }
+   // 输出结果（按题目要求的格式）
+   for (int i = 9; i >= 0; i--)
+   {
+      for (int j = 9; j >= 0; j--)
+      {
+         cout << result[i * 10 + j];
+      }
+      cout << endl;
+   }
+
+   system("pause");
+   return 0;
+}

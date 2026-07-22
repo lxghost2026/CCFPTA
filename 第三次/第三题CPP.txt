@@ -1,0 +1,46 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+   // D:出现的字词([1,9]之间),N:不大于N的非负整数
+   int D = 1;
+   long long n = 12;
+   long long res = 0;
+
+   long long l = 0;  // N的低位
+   long long pw = 1; // 10^低位数,有多少位
+
+   while (n > 0)
+   {
+
+      if (n % 10 < D)
+      {
+         // 如果N的当前位小于D
+         // 累加：（N的高位）*10^低位数
+         res += n / 10 * pw;
+      }
+      else if (n % 10 > D)
+      {
+         // 如果N的当前位大于D
+         // 累加：（N的高位+1）*10^低位数
+         res += (n / 10 + 1) * pw;
+      }
+      else
+      {
+         // 如果N的当前位等于D
+         // 累加：（N的高位）*10^低位数+N的低位+1
+         res += n / 10 * pw + l + 1;
+      }
+
+      l += n % 10 * pw;
+      n /= 10;
+      pw = pw * 10;
+   }
+
+   cout << endl
+        << res << endl;
+
+   system("pause");
+   return 0;
+}

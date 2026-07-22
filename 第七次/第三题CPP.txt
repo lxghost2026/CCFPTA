@@ -1,0 +1,67 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+   int n = 3;  // 树的数量
+   int h = 10; // 树的高度
+   int d = 2;  // Delta
+
+   // s[i][j]:第i颗数的高度为j时的柿子数量，下标从1开始
+   std::vector<std::vector<int>> s(n + 1, std::vector<int>(h + 1, 0));
+   s[1][1]++;
+   s[1][4]++;
+   s[1][10]++;
+   s[2][3]++;
+   s[2][5]++;
+   s[2][9]++;
+   s[2][7]++;
+   s[2][8]++;
+   s[2][9]++;
+   s[3][4]++;
+   s[3][5]++;
+   s[3][3]++;
+   s[3][6]++;
+   s[3][9]++;
+
+   // dp[i][j]：在第i颗数位置为j时能吃掉几个
+   // 由于动态规划求解，所以高度+1+d,以防止超过树顶
+   std::vector<std::vector<int>> dp(n + 1, std::vector<int>(h + d + 1, 0));
+
+   // 小猫在每个树顶吃到的为当前的
+   for (int i = 1; i <= n; i++)
+      dp[i][h] = s[i][h]; // h是树的高度
+
+   // 高度从高往下求，树顶已经知道了，所以从下面一层开始
+   for (int j = h - 1; j >= 0; j--)
+   {
+      for (int i = 1; i <= n; i++) // 树的编号
+      {
+         // 1.从当前树的上满落下来，则吃到的为上一个高度吃到的
+         // 加上当前高度的
+         dp[i][j] = dp[i][j + 1] + s[i][j];
+
+         // 2.从其他树过来，由于不知道从哪颗树跳过来
+         // 所以求全部树的跳过来的
+         for (int k = 1; k <= n; k++)
+         {
+            // 从树k跳过来，则跳过来的高度为j+d
+            // 则吃到的为树k的高度为j+d的+当前树i高度j的和
+            dp[i][j] = std::max(dp[i][j], dp[k][j + d] + s[i][j]);
+         }
+      }
+   }
+
+   int ans = 0;
+   // 得到最大值
+   for (int i = 0; i <= n; i++)
+   {
+      ans = std::max(ans, dp[i][0]);
+   }
+
+   cout << endl
+        << ans << endl;
+   system("pause");
+   return 0;
+}

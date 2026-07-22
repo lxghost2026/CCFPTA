@@ -1,0 +1,62 @@
+#include <unordered_set>  
+#include <iostream>
+using namespace std;
+
+
+/*
+unordered_set<T> 是 C++11 引入的无序关联容器，它存储唯一的元素，并且不进行排序。
+底层基于哈希表实现，提供平均 O(1) 的插入、删除和查找性能。
+*/
+
+void example_unordered()
+{
+    // 创建 unordered_set
+    std::unordered_set<int> s;
+    
+    // 插入元素（重复元素会被忽略）
+    s.insert(5);
+    s.insert(3);
+    s.insert(8);
+    s.insert(5);  // 不会插入，因为 5 已存在
+    
+    // 查找元素（平均 O(1)）
+    if (s.find(3) != s.end()) {
+        std::cout << "找到 3" << std::endl;
+    }
+
+    // 遍历（顺序不确定，取决于哈希）
+    for (int x : s) {
+        std::cout << x << " ";  // 可能是 3 8 5（任意顺序）
+    }
+
+}
+
+
+void insert(std::vector<int>& s,unordered_set<int>& p,unordered_set<int>& t)
+{
+   for(int i=0;i<s.size();i++)
+   {
+      p.insert(s[i]);
+      t.insert(s[i]);
+   }
+}
+
+
+int main()
+{
+   int n1=5,n2=8,n3=3;
+   std::vector<int> s1={1,5,3,5,2};
+   std::vector<int> s2={6, 4, 2, 7, 4, 2, 1, 3};
+   std::vector<int> s3={7, 1, 2 };
+
+   std::unordered_set<int> a(n1), b(n2), c(n3), t(n1+n2+n3);
+
+   insert(s1,a,t);
+   insert(s2,b,t);
+   insert(s3,c,t);
+
+   cout<<endl<<a.size()<<" "<<b.size()<<" "<<c.size()<<" "<<t.size()<<endl;
+
+   system("pause");
+   return 0;
+}

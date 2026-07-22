@@ -1,0 +1,28 @@
+#include <unordered_set>
+#include <set>
+#include <string>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+   /*
+   std::set:红黑树（平衡二叉搜索树）,自动排序（默认升序）,O(log n)
+   std::unordered_set:哈希表,无序（取决于哈希函数）,平均 O(1)，最坏 O(n)
+   */
+
+   int N = 5; // 选手数量
+   // std::unordered_set<string> s;
+   std::set<string> s;
+   s.insert("DE");
+   s.insert("ST");
+   s.insert("DE");
+   s.insert("ST");
+   s.insert("WF");
+
+   cout << endl
+        << 40 - s.size() << endl;
+
+   system("pause");
+   return 0;
+}

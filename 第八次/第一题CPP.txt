@@ -1,0 +1,51 @@
+#include <iomanip> // 输出两位小数
+#include <vector>
+#include <iostream>
+using namespace std;
+
+struct Good
+{
+   double t; // 整理时间
+   double v; // 价值
+   double p; // 单位价值
+   Good(double _t, double _v) : t(_t), v(_v)
+   {
+      p = v / t; // 得到单位价值
+   }
+};
+
+int main()
+{
+   int N = 4;    // 物资的种类
+   double M = 5; // 拥有的总时间
+
+   std::vector<Good> s;
+   s.emplace_back(1, 2);
+   s.emplace_back(2, 4);
+   s.emplace_back(3, 4);
+   s.emplace_back(2, 2);
+
+   sort(s.begin(), s.end(), [](const Good &a, const Good &b) -> bool
+        { return a.p > b.p; });
+
+   double v = 0; // 总价值
+   for (int i = 0; i < s.size() && M > 0; i++)
+   {
+      if (M >= s[i].t)
+      {
+         v += s[i].v;
+         M -= s[i].t;
+      }
+      else
+      {
+         v += M / s[i].t * s[i].v;
+         M = 0;
+      }
+   }
+   
+   //输出两位小数
+   cout << endl<<fixed<<setprecision(2)<< v <<endl;
+
+   system("pause");
+   return 0;
+}

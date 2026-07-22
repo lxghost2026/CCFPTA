@@ -1,0 +1,28 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+
+int main()
+{
+   int N = 7; // 矿脉地段的个数
+
+   std::vector<int> s={2,-4,3,-1,2,-4,3};
+
+   int maxV=s[0];//最大子段的值
+   int curV=s[0];//以当前元素为结尾的最大值
+
+   for(int i=1;i<s.size();i++)
+   {
+      //该元素要么单独成段，要么与前面的段形成一段
+      //取最大值
+      curV=std::max(s[i],curV+s[i]);
+      //更新最大段
+      maxV=std::max(maxV,curV);
+   }
+
+   cout<<endl<<maxV<<endl;
+
+   system("pause");
+   return 0;
+}

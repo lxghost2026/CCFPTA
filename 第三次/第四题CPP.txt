@@ -1,0 +1,95 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+/*
+0      1   2   3   4   5   6   7
+起始   A   A   B   A   A   A  终点
+行动  -2   3   1   2   4   2   0
+cost  2    7   4   4   4   2   0
+
+一、从6到7，只需要一步，由于6惩罚2，所以最少金币为2
+二、从5开始：（1）先到6，由于5要惩罚4, 6的最小金币为2，则最少需要6
+            （2）直接到7, 5惩罚4，故最少需要4
+三、从4开始，（1）先到5, 4的惩罚为2，5的最小成本需要4,故最少需要6
+            （2）先到6，4的惩罚为2，6的最小成本需要2,故最少需要4
+四、从3开始，3前进到4,4的最小成本是4，则最小成本是4
+五、从2开始，无论前进一步还是二步，最小成本都是4, 2的惩罚是3，则最小需要7
+六、从1开始，前进到2的最小成本是7-2=5，前进到3的最小成本是4-2=2
+*/
+
+struct node
+{
+   string type;
+   int auction; // A：是处罚，B：前进
+   node(string _t, int _a) : type(_t), auction(_a) {}
+};
+
+int main()
+{
+   int ans = 0;
+   int N = 7; // 地图的长度
+
+   std::vector<node> map;
+   map.emplace_back("A", -2);
+   map.emplace_back("A", 3);
+   map.emplace_back("B", 1);
+   map.emplace_back("A", 2);
+   map.emplace_back("A", 4);
+   map.emplace_back("A", 2);
+
+   // 保存每个格的最小成本
+   std::vector<int> cost(N, 0);
+
+   // 倒着往前面求
+   for (int i = N - 2; i >= 0; i--)
+   {
+      // 如果类型是A，则可以前进1或2个格子
+      // 如果是B，可能是从另外的B强制前进过来的，则下一步可以走1或2格
+      // 前进一个格子的话，则最小金币数为前进的那个格子需要的最小金币数
+      //+当前各自的惩罚数
+      bool flag = false;
+      if (map[i].type == "B")
+      {
+         // 类型为B，需要强行前进auction步
+         // 则还需要看前进auction步后那个格的最小成本
+         cost[i] = cost[i + map[i].auction];
+
+         // 需要查找前面是否有格子能直接到B当前格子的
+         for (int j = N - 3; j >= 0; j--)
+         {
+            if (map[j].type == "B" && map[j].auction + j == i)
+            {
+               flag = true;
+               break;
+            }
+         }
+      }
+      if (map[i].type == "A" || flag == true)
+      {
+         //当flag为true时，说明
+         int min1 = cost[i + 1] + map[i].auction;
+         int min = 0;//类型为A时的最小成本
+         if (i + 2 <= N - 1)
+         {
+            // 前进两个格子的最小金币数
+            int min2 = cost[i + 2] + map[i].auction; // 与前进一个类似
+            min = std::min(min1, min2);              // 为两者中的最低值
+         }
+         else
+            min = min1; // 只能前进一步
+
+         if (flag == true)
+            cost[i] = std::min(cost[i], min);
+         else
+            cost[i] = min;
+      }
+   }
+
+   cout << endl;
+   for (int i = 0; i < cost.size(); i++)
+      cout << cost[i] << endl;
+
+   system("pause");
+   return 0;
+}

@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+
+
+int F(int n)
+{
+   if(n==0)
+      return 1;
+   if(n==1)
+      return 3;
+   return 4*F(n-1)-F(n-2);
+}
+
+
+int main()
+{
+   cout<<"F(5)="<<F(10)<<endl;
+
+   system("pause");
+   return 0;
+}

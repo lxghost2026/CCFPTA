@@ -1,0 +1,54 @@
+
+#include <iostream>
+using namespace std;
+
+struct gold
+{
+   double v;//价值
+   double w;//重量
+   double p;//单位价格
+   gold(int _w = 0,int _v = 0) : v(_v), w(_w) 
+   {
+      p=v/w;
+   }
+};
+
+int main()
+{
+   int n = 4; // 金币的数量
+   int T = 50; // 背包容量
+
+   std::vector<gold> s;
+   s.emplace_back(10, 60);
+   s.emplace_back(20, 100);
+   s.emplace_back(30, 120);
+   s.emplace_back(15, 45);
+
+   std::sort(s.begin(),s.end(),[](const gold&a,const gold& b)->bool{
+      return a.p>b.p;
+   });
+
+   double sum=0;//最后的价值和
+
+   for(int i=0;i<s.size();i++)
+   {
+      if(T>=s[i].w)
+      {
+         T-=s[i].w;
+         sum+=s[i].v;
+      }
+      else
+      {
+         sum+=s[i].v*T/s[i].w;//分割拿走
+         break;
+      }
+
+   }
+
+   cout<<endl<<sum<<endl;
+
+
+
+   system("pause");
+   return 0;
+}

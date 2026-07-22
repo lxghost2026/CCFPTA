@@ -1,0 +1,86 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+/// @brief 
+/// @param minDist 最小安全距离
+/// @param debris  残骸位置
+/// @param maxRemove 最多可清理数量
+/// @param totalLength 航道总长度
+/// @return 
+bool check(int minDist, const vector<int> &debris, int maxRemove, int totalLength)
+{
+   int lastPos = 0;     // 上一个没有被移除的位置
+   int removeCount = 0; // 移除的数量
+   for (int i = 0; i < debris.size(); i++)
+   {
+      // 如果当前的元素和上一个留下来的元素的距离小于二分答案约定的最小距离的话就
+      // 移除当前的元素。
+      if (debris[i] - lastPos < minDist)
+      {
+         removeCount++;
+         // 如果当前移除的元素个数超过了给定的移除数量则说明该距离不合适
+         if (removeCount > maxRemove)
+         {
+            return false;
+         }
+      }
+      else
+      {
+         // 不移除则更新上一个结束的位置
+         lastPos = debris[i];
+      }
+   } // 最后还需要和终点的距离进行判断
+   if (totalLength - lastPos < minDist)
+   {
+      removeCount++;
+      if (removeCount > maxRemove)
+      {
+         return false;
+      }
+   }
+   return true;
+}
+
+int main()
+{
+   //航道总长度， 矿脉地段的个数, 最多可清理数量
+   int L=25, N=5, M=2;
+   //cin >> L >> N >> M;
+   vector<int> debris = {2, 11, 14, 17, 21};
+   /*
+   for (int i = 0; i < N; i++)
+   {
+      cin >> debris[i];
+   }
+   */
+
+   //最小安全距离最小为1，最大为航道总长度L
+   int left = 1, right = L;
+   int answer = 0;
+   // 二分答案，查找最小安全距离的最大值
+   while (left <= right)
+   {
+      int mid = (right + left) / 2;
+      // 二分计算中点，让mid作为小安全距离的下限
+      if (check(mid, debris, M, L)==true)
+      {
+         // 如果当前中点可以作为符合条件的小安全距离，
+         // 那么可以尝试更大的答案，改变left 的值
+         answer = mid;
+         left = mid + 1;
+      }
+      else
+      {
+         // 否则说明当前的最小安全距离选大了
+         // 需要尝试更小的答案，改变right的值
+         right = mid - 1;
+      }
+   }
+
+   cout << endl
+        << answer << endl;
+
+   system("pause");
+   return 0;
+}

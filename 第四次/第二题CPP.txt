@@ -1,0 +1,50 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+struct student
+{
+   int id;
+   int score;
+   student(int _id = 0, int _score = 0) : id(_id), score(_score) {}
+};
+
+int main()
+{
+   int n = 6; // 报名参加笔试的选手总数
+   int m = 3; // 计划录取的志愿者人数
+
+   std::vector<student> stu;
+   stu.emplace_back(1100, 85);
+   stu.emplace_back(1200, 85);
+   stu.emplace_back(1009, 90);
+   stu.emplace_back(1004, 91);
+   stu.emplace_back(3927, 92);
+   stu.emplace_back(8700, 84);
+
+   m = m * 3 / 2; // 得到分数线的学生的序号
+
+   std::sort(stu.begin(), stu.end(), [](const student &a, const student &b) -> bool
+             {
+      if(a.score==b.score)
+         return a.id<b.id;
+      return a.score>b.score; });
+
+   int ans = 0;
+   for (int i = 0; i < stu.size(); i++)
+   {
+      if (stu[i].score >= stu[m].score)
+         ans++; // 进入面试的人数+1
+   }
+
+   cout << endl;
+   cout << stu[m].score << " " << ans << endl;
+   for (int i = 0; i < ans; i++)
+   {
+
+      cout << stu[i].id << " " << stu[i].score << endl;
+   }
+
+   system("pause");
+   return 0;
+}

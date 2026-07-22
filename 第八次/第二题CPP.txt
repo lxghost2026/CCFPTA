@@ -1,0 +1,60 @@
+#include <vector>
+#include <string>
+#include <iostream>
+using namespace std;
+
+struct fragment
+{
+   string s1;//起始代码
+   string s2;//结束代码
+   int value;//价值
+   fragment(string _s1, string _s2,int _v) : s1(_s1), s2(_s2),value(_v){}
+};
+
+int main()
+{
+   int N=4;//候选残片数量
+   std::vector<fragment> s;
+   s.emplace_back("","X01",20);//起始残片
+   s.emplace_back("X01","Y02",20);
+   s.emplace_back("Y02","Z03",15);
+   s.emplace_back("A01","B02",10);
+   s.emplace_back("Z03","Y02",25);
+
+   //0代表没有使用过
+   std::vector<int> visted(N,0);
+   visted[0]=1;//起始残片设置为使用过
+   int k=0;//当前拼接的最后的残片下标,初始设置为起始残片
+
+   int ans=20;//总价值初始化为起始裁片的价值
+
+   bool flag=true;//是否找到下一个拼接的残片
+   while(flag==true)
+   {
+      flag=false;
+      
+      for(int i=0;i<s.size();i++)
+      {
+         if(visted[i]==1)
+            continue;//已经使用过
+         
+         if(s[i].s1==s[k].s2)
+         {
+            //可以拼接在一起
+            visted[i]=1;//设置为使用过
+            ans+=s[i].value;
+            k=i;//当前找到的为拼接的最后一块残片
+            flag=true;
+            break;
+         }
+      }
+   }
+
+   cout<<endl<<ans<<endl;
+
+
+
+
+   system("pause");
+   return 0;
+}
